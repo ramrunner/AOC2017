@@ -1,0 +1,31 @@
+(define memvec (list->vector '(10 3 15 10 5 15 5 15 9 2 5 8 5 2 3 6)))
+
+(define vecmaxind (lambda (vec)
+  (cadr (vector-fold (lambda (i cmax elem) (if (> elem (car cmax)) (list elem i) cmax)) (list 0 0) vec))))
+
+(define loop (lambda (vec)
+  (letrec* ((prevstates (make-hash-table))
+        (i 0)
+        (lenvec (vector-length vec))
+        (store (lambda (v)
+     ;     (set! prevstates (cons (cons v i) prevstates))))
+          (hash-table-set! prevstates v i)))
+        (balance (lambda (v)
+          (letrec* ((maxind (vecmaxind v))
+                (howmany (vector-ref v maxind))
+                (bloop (lambda (ind hm)
+                  (if (> hm 0)
+                    (begin 
+                      (vector-set! v ind (+ 1 (vector-ref v ind)))
+                      (bloop (modulo (+ 1 ind) lenvec) (- hm 1)))))))
+             (vector-set! v maxind 0)
+             (bloop (modulo (+ 1 maxind) lenvec) howmany)
+             (set! i (+ i 1))
+	     (if (eq? (hash-table-exists? prevstates v) #f)
+                (begin 
+                  (store (vector-copy v))
+                  (balance v))
+                 i)))))
+   (format #t "solved at ~A with vec ~A lastcycle ~A ~%" (balance vec) vec (hash-table-ref prevstates vec)))))
+
+(loop memvec)

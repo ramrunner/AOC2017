@@ -1,0 +1,55 @@
+(use srfi-1)
+(use data-structures)
+
+(define (slice l offset n)
+  (take (drop l offset) n))
+
+(define (clist->list clist n)
+ (if (> n 0)
+   (cons (car clist) (clist->list (cdr clist) (- n 1)))
+   '()))
+
+(define (countup n) (if (>= n 0) (append (countup (- n 1)) (list n)) '()))
+
+(define (knotlist lst cpos len)
+  (let* ((clist (apply circular-list lst))
+        (rlist (clist->list (reverse (slice clist cpos len)) len))
+        (plen (length lst))
+        (wrap (> (+ cpos len) plen))
+        (wrapind (modulo (+ cpos len) plen))
+        (ret '()))
+    (let loop ((i 0))
+      (when (< i plen)
+        (cond  ((and wrap (< i wrapind))
+                (set! ret (append ret (list (list-ref rlist (+ i (- (length rlist) wrapind)))))))
+               ((and (>= i cpos) (< i (+ cpos len)))
+                (set! ret (append ret (list (list-ref rlist (- i cpos))))))
+               (else
+                 (set! ret (append ret (list (list-ref lst i))))))
+        (loop (+ i 1))))
+     ret))
+ 
+(define (dolength plist lengths curpos skipsz)
+  (if (null? lengths)
+      (list plist curpos skipsz)
+    (let* ((len (car lengths))
+           (plen (length plist)))
+      (dolength (knotlist plist curpos len) (cdr lengths) (modulo (+ curpos skipsz len) plen) (+ 1 skipsz))))
+
+(define (runloop hm)
+ (let ((res '()))
+  (let loop ((i 0))
+    (when (< i hm)
+      (if (not (null? res))
+          (format #t "iteration ~A curpos ~A skpsz ~A~%" i (cadr res) (caddr res)))
+      (if (null? res)
+        (set! res (dolength (countup 255) myinput 0 0))
+        (set! res (dolength (car res) myinput (cadr res) (caddr res))))
+      (loop (+ 1 i)))
+    res)))
+
+;final step
+(define nresults (car runloop 64))
+(map (lambda (e) (format #t "~2,,0X" e)) (map (lambda (l) (fold bitwise-xor 0 l)) (chop nresults 16)))
+
+(define myinput '(54 51 44 49 52 52 44 49 56 48 44 49 52 57 44 49 44 50 53 53 44 49 54 55 44 56 52 44 49 50 53 44 54 53 44 49 56 56 44 48 44 50 44 50 53 52 44 50 50 57 44 50 52 17 31 73 47 23))

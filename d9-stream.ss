@@ -1,3 +1,5 @@
+;; run like (parseline "fname")
+
 (define (parseline file)
   (letrec*  ((input (string->list (car (read-lines file))))
           (inlen (length input))

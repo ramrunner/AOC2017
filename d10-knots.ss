@@ -1,4 +1,5 @@
 (use srfi-1)
+(use format)
 (use data-structures)
 
 (define (slice l offset n)
@@ -34,22 +35,22 @@
       (list plist curpos skipsz)
     (let* ((len (car lengths))
            (plen (length plist)))
-      (dolength (knotlist plist curpos len) (cdr lengths) (modulo (+ curpos skipsz len) plen) (+ 1 skipsz))))
+      (dolength (knotlist plist curpos len) (cdr lengths) (modulo (+ curpos skipsz len) plen) (+ 1 skipsz)))))
 
-(define (runloop hm)
+(define (runloop hm input)
  (let ((res '()))
   (let loop ((i 0))
     (when (< i hm)
       (if (not (null? res))
           (format #t "iteration ~A curpos ~A skpsz ~A~%" i (cadr res) (caddr res)))
       (if (null? res)
-        (set! res (dolength (countup 255) myinput 0 0))
-        (set! res (dolength (car res) myinput (cadr res) (caddr res))))
+        (set! res (dolength (countup 255) input 0 0))
+        (set! res (dolength (car res) input (cadr res) (caddr res))))
       (loop (+ 1 i)))
     res)))
 
 ;final step
-(define nresults (car runloop 64))
+(define nresults (car (runloop 64 myinput)))
 (map (lambda (e) (format #t "~2,,0X" e)) (map (lambda (l) (fold bitwise-xor 0 l)) (chop nresults 16)))
 
 (define myinput '(54 51 44 49 52 52 44 49 56 48 44 49 52 57 44 49 44 50 53 53 44 49 54 55 44 56 52 44 49 50 53 44 54 53 44 49 56 56 44 48 44 50 44 50 53 52 44 50 50 57 44 50 52 17 31 73 47 23))

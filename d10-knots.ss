@@ -42,7 +42,7 @@
   (let loop ((i 0))
     (when (< i hm)
       (if (not (null? res))
-          (format #t "iteration ~A curpos ~A skpsz ~A~%" i (cadr res) (caddr res)))
+          (format #f "iteration ~A curpos ~A skpsz ~A~%" i (cadr res) (caddr res)))
       (if (null? res)
         (set! res (dolength (countup 255) input 0 0))
         (set! res (dolength (car res) input (cadr res) (caddr res))))
@@ -50,7 +50,24 @@
     res)))
 
 ;final step
-(define nresults (car (runloop 64 myinput)))
-(map (lambda (e) (format #t "~2,,0X" e)) (map (lambda (l) (fold bitwise-xor 0 l)) (chop nresults 16)))
+(define knothash (lambda (in)
+  (let ((result (car (runloop 64 in))))
+    (map (lambda (e) (format #f "~2,,0x" e)) (map (lambda (l) (fold bitwise-xor 0 l)) (chop result 16))))))
+
+(define (despace str)
+  (let* ((aslist (string->list str))
+         (oc (cadr aslist)))
+    (if (eq? (car aslist) #\space)
+        (list->string (list #\0 oc))
+        str)))
+
+(define (inputToKnotHash in)
+  (let* ((str2l (string->list in))
+	 (asciinums (char-set->list char-set:ascii))
+         (str2nums (map (lambda (c) (index c asciinums)) str2l))
+	 (strfinal (append str2nums '(17 31 73 47 23))))
+    (knothash strfinal)))
 
 (define myinput '(54 51 44 49 52 52 44 49 56 48 44 49 52 57 44 49 44 50 53 53 44 49 54 55 44 56 52 44 49 50 53 44 54 53 44 49 56 56 44 48 44 50 44 50 53 52 44 50 50 57 44 50 52 17 31 73 47 23))
+
+;(define result (knothash myinput))

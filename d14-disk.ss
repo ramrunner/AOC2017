@@ -1,0 +1,30 @@
+(define myinput '(120 108 113 103 117 106 117 110 45 48 ))
+(use extras)
+(use srfi-14)
+(load "d10-knots.ss") 
+(define hexlist '(#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9 #\a #\b #\c #\d #\e #\f))
+
+
+(define index (lambda (e lst)
+  (let ((tail (member e (reverse lst))))
+        (and tail (length (cdr tail))))))
+
+(define (genNumTailStrs instr upto cur res)
+  (if (< cur upto)
+    (genNumTailStrs instr upto (+ 1 cur) (append res (list (sprintf "~A-~A" instr cur))))
+    res))
+
+(define (bitweight n)
+  (letrec ((count 0)
+	   (curn n)
+           (loop (lambda (cn tot)
+                   (if (> cn 0)
+                       (loop (bitwise-and cn (- cn 1)) (+ tot 1))
+                       tot))))
+    (loop curn 0)))
+
+(define instrs (genNumTailStrs "xlqgujun" 128 0 '()))
+(define propstrs (map (lambda (lst) (map despace lst)) (map inputToKnotHash instrs)))
+(define propchars (map (lambda (str) (string->list str)) (map (lambda (lst) (string-join lst "")) propstrs)))
+(define weights (map (lambda (l) (map bitweight l))  (map (lambda (lst) (map (lambda (e) (index e hexlist)) lst)) propchars)))
+(define hamming-result (map (lambda (lst) (foldl (lambda (e acc) (+ e acc)) 0 lst)) weights))

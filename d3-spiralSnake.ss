@@ -1,3 +1,5 @@
+(import format)
+
 (define target 289326)
 
 ;this will hold pairs . the first part of the pair is a list of the coords
@@ -74,4 +76,4 @@
                (solve)))))
     (solve)))
     
-
+(walkToTarget target)

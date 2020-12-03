@@ -1,4 +1,7 @@
 ;multiline string
+(import (chicken string))
+(import simple-loops)
+
 (define myinput #<<EOF
 157	564	120	495	194	520	510	618	244	443	471	473	612	149	506	138
 1469	670	47	604	1500	238	1304	1426	54	749	1218	1409	60	51	1436	598

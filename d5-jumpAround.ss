@@ -1,13 +1,14 @@
-(use extras)
+(import (chicken io))
+(import format)
 
-;;read input turn it into a list of numbers
+;read input turn it into a list of numbers
 (define readlist
   (lambda (ln acc)
    (if (null? ln) acc (cons (string->number ln) acc))))
 
 (define solveJump
-  (lambda (fname)
-   (letrec* ((jlist (list->vector (foldr readlist '() (read-lines fname)))) ;treat it as a mutable vector
+  (lambda (port)
+   (letrec* ((jlist (list->vector (foldr readlist '() (read-lines port)))) ;treat it as a mutable vector
          (step 0)
          (jlength (vector-length jlist))
          (jumper (lambda (ind) ;set up a recursive lambda that takes the current index on the vec
@@ -23,4 +24,4 @@
                   (jumper (+ ind localstore))))))))
      (format #t "solved in:~A~%" (jumper 0)))))
 
-(solveJump "input1day5")
+(call-with-input-file "inputs/day5" solveJump)

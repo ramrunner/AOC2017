@@ -1,3 +1,7 @@
+(import (chicken string))
+(import (chicken sort))
+(import format)
+
 (define filterokpass (lambda (lines)
   (let* ((valid 0) 
          (string2slist (lambda (str) ; we solve anagram equality if we sort the list and check for equality on that.

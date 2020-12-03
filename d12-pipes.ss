@@ -1,6 +1,6 @@
-(use srfi-13)
-(use format)
-(use vector-lib)
+(import srfi-13)
+(import format)
+(import vector-lib)
 
 ;;implemented brute connected components. each index of the array
 ;;reference the parent. upon a connection all the relevant parents
@@ -34,7 +34,7 @@
     (map (lambda (e) (chroot e root)) nodes)))
 
 ;;first part
-(fold (lambda (e acc) (if (eq? e (vector-ref rel 0)) (+ 1 acc) acc)) 0 (vector->list rel))
+(foldr (lambda (e acc) (if (eq? e (vector-ref rel 0)) (+ 1 acc) acc)) 0 (vector->list rel))
 
 
 ;;second part

@@ -1,5 +1,7 @@
-(use srfi-1)
-(use srfi-13)
+(import srfi-1)
+(import srfi-13)
+(import format)
+
 (define (parseinput ln)
   (letrec* ((pos (string-split (car ln) ","))
         (x  0)

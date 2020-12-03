@@ -1,6 +1,7 @@
-(use srfi-1)
-(use format)
-(use data-structures)
+(import srfi-1)
+(import format)
+(import (chicken bitwise))
+;(import data-structures)
 
 (define (slice l offset n)
   (take (drop l offset) n))
@@ -70,4 +71,5 @@
 
 (define myinput '(54 51 44 49 52 52 44 49 56 48 44 49 52 57 44 49 44 50 53 53 44 49 54 55 44 56 52 44 49 50 53 44 54 53 44 49 56 56 44 48 44 50 44 50 53 52 44 50 50 57 44 50 52 17 31 73 47 23))
 
-;(define result (knothash myinput))
+(define result (knothash myinput))
+(format #t "result: ~A~%" result)

@@ -1,4 +1,5 @@
-(use srfi-69)
+(import srfi-69)
+(import format)
 
 (define (!= a b)
   (not (eq? a b)))
@@ -47,3 +48,6 @@
 (format #t "registers: ~A ~% ~%" (hash-table->alist registers))
      (map (lambda (p) (cond ((> (cdr p) maxval) (set! maxval (cdr p))))) (hash-table->alist registers))
      (format #t "max is :~A max ever:~A~%" maxval maxeverval))))
+
+(runvm "inputs/day8")
+

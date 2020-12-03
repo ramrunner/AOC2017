@@ -1,4 +1,6 @@
 ;; run like (parseline "fname")
+(import format)
+(import (chicken io))
 
 (define (parseline file)
   (letrec*  ((input (string->list (car (read-lines file))))
@@ -56,3 +58,5 @@
                                (parserrec (+ 1 ind)))))))
     (parserrec 0)
     (format #t "Score:~A cancelled:~A~%" groupscore totcanceled)))
+
+(call-with-input-file "inputs/day9" parseline)

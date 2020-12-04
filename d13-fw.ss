@@ -1,5 +1,7 @@
-(use format)
-(use srfi-1)
+(import format)
+(import srfi-1)
+(import (chicken io))
+(import (chicken string))
 
 (define fw '())
 (define readinput (lambda (ln)
@@ -15,5 +17,5 @@
           (incdlay (lambda (d) (let ((score (foldr (runwithdlay d) 0 fw))) (if (eq? score 0) d (incdlay (+ d 1)))))))
    (format #t "done with delay ~A" (incdlay 0)))))
 
-(map readinput (read-lines "input1day13"))
+(map readinput (call-with-input-file "inputs/day13" (lambda (p) (read-lines p))))
 (solve)

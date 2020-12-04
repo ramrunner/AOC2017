@@ -1,3 +1,8 @@
+(import (chicken io))
+(import (chicken string))
+(import srfi-13)
+(import format)
+
 (define (readinaslist fname)
   (letrec* ((lines (read-lines fname))
 	 (oneline (foldr (lambda (e acc) (append (string->list e) acc)) '() lines))
@@ -37,4 +42,5 @@
                           (walk (keepgoing from towards) towards (- remsteps 1))))))))
 
    (walk firstpos 'down 100000)
-   (format #t "seen: ~A in ~A steps~N" letts totsteps)))
+   (format #t "seen: ~A in ~A steps~N~%" letts totsteps)))
+(call-with-input-file "inputs/day19" readinaslist)

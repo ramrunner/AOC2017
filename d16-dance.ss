@@ -1,7 +1,10 @@
-(use srfi-1)
-(use vector-lib)
-(use extras)
-(use srfi-69)
+(import srfi-1)
+(import vector-lib)
+(import (chicken string))
+(import (chicken io))
+(import srfi-69)
+(import format)
+
 (define startstate  '(a b c d e f g h i j k l m n o p))
 (define teststate '(a b c d e))
 (define memo (make-hash-table))
@@ -48,4 +51,4 @@
                        lst))))
     (format #t "result ~A ~N" (rerecur 1000000000 startstate))))
 
-(readinput "input1day16")
+(call-with-input-file "inputs/day16" readinput)

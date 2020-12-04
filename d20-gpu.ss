@@ -1,7 +1,7 @@
-(use regex)
-(use srfi-69)
-(use srfi-1)
-(use data-structures)
+(import regex)
+(import srfi-69)
+(import srfi-1)
+(import (chicken io))
 (define points '())
 
 (define (make-vec x y z)
@@ -98,3 +98,5 @@
                                                                                 points))
                                                  (loop (read-line) (+ num 1)))))))
                             (loop (read-line) 0)))))
+
+(parse "inputs/day20")

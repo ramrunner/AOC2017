@@ -1,6 +1,6 @@
 (define myinput '(120 108 113 103 117 106 117 110 45 48 ))
-(use extras)
-(use srfi-14)
+(import srfi-14)
+(import (chicken format))
 (load "d10-knots.ss") 
 (define hexlist '(#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9 #\a #\b #\c #\d #\e #\f))
 

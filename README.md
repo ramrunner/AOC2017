@@ -7,7 +7,7 @@ and run (load "dX-foo.ss"). For now some excercises have the input hardcoded
 while others provide a lambda that expects it as an argument.
 
 ##installing required eggs
-chicken-install -s srfi-1 simple-loops format vector-lib
+chicken-install -s srfi-1 simple-loops format vector-lib bitwise-utils
 
 ## who do i pay?
 the creator of AOC! go support him at: 

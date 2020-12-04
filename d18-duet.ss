@@ -1,7 +1,9 @@
-(use srfi-69)
-(use format)
-(use data-structures)
-(use posix)
+(import srfi-69)
+(import format)
+(import queues)
+(import (chicken io))
+(import (chicken string))
+(import (chicken file posix))
 
 (define make-vm-queue
   (lambda ()
@@ -124,8 +126,8 @@
 
 (define dvm1 (duetvm 0))
 (define dvm2 (duetvm 1))
-((dvm1 'load) "dvmcode1")
-((dvm2 'load) "dvmcode1")
+((dvm1 'load) "inputs/day18")
+((dvm2 'load) "inputs/day18")
 ((dvm1 'set-neighbour) dvm2)
 ((dvm2 'set-neighbour) dvm1)
 
@@ -139,8 +141,6 @@
            ;(format #t "vm2q:~A~%" (((vm2 'get-queue)) 'print))
            (round-robin vm1 vm2)))))
 
-#|
 (round-robin dvm1 dvm2)
 ((dvm1 'dump))
 ((dvm2 'dump))
-|#

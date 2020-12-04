@@ -1,6 +1,6 @@
-(use srfi-1)
-(use vector-lib)
-(use format)
+(import srfi-1)
+(import vector-lib)
+(import format)
 ;; for step 1.
 #|
 (define (add-at elem pos lst)
